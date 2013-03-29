@@ -14,11 +14,27 @@ void main(){
   testRandomWords();
   testGetWordObject();
   testGetExamples();
+  testGetDefinitions(); 
 }
 
 void setup(){
   print("Hello Wordnik Test: Setup stage");
   api = new WordnikAPI("187b7605269b0c53bf65714c9a901203abe8587b53a397a0a");
+}
+
+void testGetDefinitions(){
+  group("Get definitions API call",(){
+    DefinitionRequest req = new DefinitionRequest("cat");
+    Future<List<Definition>> response = api.getDefinitions(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check response for 'cat'",(){
+      
+      Definition def = new Definition.fromJson("{\"textProns\":[],\"sourceDictionary\":\"ahd-legacy\",\"exampleUses\":[],\"relatedWords\":[],\"labels\":[],\"citations\":[],\"word\":\"cat\",\"text\":\"A small carnivorous mammal (Felis catus or F. domesticus) domesticated since early times as a catcher of rats and mice and as a pet and existing in several distinctive breeds and varieties.\",\"sequence\":\"0\",\"score\":0.0,\"partOfSpeech\":\"noun\",\"attributionText\":\"from The American Heritage® Dictionary of the English Language, 4th Edition\"}");
+      expect(response,completion(someElement(equals(def))));
+    });
+  });
 }
 
 void testGetExamples(){

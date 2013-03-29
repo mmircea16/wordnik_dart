@@ -1,6 +1,6 @@
 library definition;
 import "results.dart";
-
+import "dart:json";
 
 class Definition extends Results{
   String extendedText;

@@ -57,6 +57,19 @@ class WordnikAPI {
     apiUrl = "http://api.wordnik.com/v4";
   }
   
+  Future<List<Definition>> getDefinitions(DefinitionRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/definitions${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       dynamic list = parse(data);
+       List<Definition> defs = list.map((val)=>new Definition.fromJson(val, true)).toList();
+       completer.complete(defs);
+    });
+    return completer.future;
+  }
+  
   Future<WordObject> getWordObject(WordRequest req){
     var completer = new Completer();
     String params = "?${req.toParams()}";
