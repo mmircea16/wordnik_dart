@@ -57,6 +57,8 @@ class WordnikAPI {
     apiUrl = "http://api.wordnik.com/v4";
   }
   
+  
+  
   Future<List<Definition>> getDefinitions(DefinitionRequest req){
     var completer = new Completer();
     String params = "?${req.toParams()}";
@@ -82,6 +84,18 @@ class WordnikAPI {
     return completer.future;
   }
   
+  Future<Example> getTopExample(ExampleRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/topExample${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       Example w = new Example.fromJson(data); 
+       completer.complete(w);
+    });
+    return completer.future;
+  }
+  
   Future<ExampleSearchResults> getExamples(ExampleRequest req){
     var completer = new Completer();
     String params = "?${req.toParams()}";
@@ -89,7 +103,6 @@ class WordnikAPI {
     Future<String> resp = client.read(path, headers:headers);
     resp.then((data){
        ExampleSearchResults w = new ExampleSearchResults.fromJson(data);
-       print("data:${data}");
        completer.complete(w);
     });
     return completer.future;

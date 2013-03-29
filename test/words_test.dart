@@ -15,11 +15,27 @@ void main(){
   testGetWordObject();
   testGetExamples();
   testGetDefinitions(); 
+  testGetTopExample();
 }
 
 void setup(){
   print("Hello Wordnik Test: Setup stage");
   api = new WordnikAPI("187b7605269b0c53bf65714c9a901203abe8587b53a397a0a");
+}
+
+void testGetTopExample(){
+  group("Get top example API call",(){
+    ExampleRequest req = new ExampleRequest("cat");
+    Future<Example> response = api.getTopExample(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check top example for 'cat'",(){
+      
+      Example example = new Example.fromJson("{\"year\":1899,\"provider\":{\"name\":\"wordnik\",\"id\":711},\"url\":\"http://www.gutenberg.org/dirs/1/1/2/5/11251/11251-8.txt\",\"word\":\"cat\",\"text\":\"In a subsequent passage, \\\"I am as melancholy as a gibb'd cat\\\" -- we are told that _cat_ is not the domestic animal of that name, but a contraction of _catin_, a woman of the town.\",\"title\":\"Famous Reviews\",\"documentId\":18094183,\"exampleId\":1185868246,\"rating\":8939.131} ");
+      expect(response,completion(equals(example)));
+    });
+  });
 }
 
 void testGetDefinitions(){
