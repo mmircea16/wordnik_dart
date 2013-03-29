@@ -9,7 +9,11 @@ import 'dart:html';
 import "package:intl/intl.dart";
 import 'src/example_search_results.dart';
 import 'src/example_request.dart';
+import 'src/definition.dart';
+import 'src/definition_request.dart';
 
+export 'src/definition_request.dart';
+export 'src/definition.dart';
 export 'src/example_request.dart';
 export 'src/example_search_results.dart';
 export 'src/word_request.dart';
