@@ -1,0 +1,11 @@
+name: Wordnick
+description: A sample web application
+dependencies:
+  http: any
+  browser: any
+  pathos: any
+dev_dependencies:
+  unittest: any
+  Wordnick:
+    path: D:\dev\dart\workspace\Wordnick
+  intl: any
