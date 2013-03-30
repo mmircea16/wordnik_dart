@@ -7,6 +7,23 @@ class Request{
   }
 }
 
+class RelatedWordsRequest{
+  /** TODO : transform relationshipType to List<String> **/
+  String word;
+  bool useCanonical;
+  String relationshipType;
+  int limitPerRelationshipType;
+  RelatedWordsRequest(this.word,[this.useCanonical=false,this.relationshipType="",this.limitPerRelationshipType=10]);
+  
+  String toParams(){
+    return "useCanonical=${useCanonical}&relationshipTypes=${relationshipType}&limitPerRelationshipType=${limitPerRelationshipType}";
+  }
+  
+  operator ==(RelatedWordsRequest req){
+    return this.word==req.word&&this.useCanonical==req.useCanonical&&this.relationshipType==req.relationshipType&&this.limitPerRelationshipType==req.limitPerRelationshipType;
+  }
+}
+
 class DefinitionRequest extends Request{
   String word;
   int limit;

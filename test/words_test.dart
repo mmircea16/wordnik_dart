@@ -16,11 +16,29 @@ void main(){
   testGetExamples();
   testGetDefinitions(); 
   testGetTopExample();
+  testGetRelatedWords();
 }
 
 void setup(){
   print("Hello Wordnik Test: Setup stage");
   api = new WordnikAPI("187b7605269b0c53bf65714c9a901203abe8587b53a397a0a");
+}
+
+void testGetRelatedWords(){
+  group("Get related words API call",(){
+    RelatedWordsRequest req = new RelatedWordsRequest("cautious",false,"antonym",2);
+    Future<List<Related>> response = api.getRelatedWords(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check top example for 'cautious'",(){
+      
+      Related r1 = new Related.fromJson("{\"words\":[\"careless\",\"neglecting\"],\"relationshipType\":\"antonym\"}");
+      List<Related> list = new List<Related>();
+      list.add(r1);
+      expect(response,completion(equals(list)));
+    });
+  });
 }
 
 void testGetTopExample(){

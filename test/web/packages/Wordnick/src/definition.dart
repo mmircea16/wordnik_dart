@@ -50,7 +50,7 @@ class Definition extends Results{
     
     list = getValueFor(data,"relatedWords");
     if (list!=null) this.relatedWords = list.map((val){return new Related.fromJson(val,true);}).toList();
-    else this.related = null;
+    else this.relatedWords = null;
     
     list = getValueFor(data,"notes");
     if (list!=null) this.notes = list.map((val){return new Note.fromJson(val,true);}).toList();
@@ -88,7 +88,7 @@ class TextPron extends Results{
   TextPron();
   TextPron.fromJson(dynamic json,[bool parsed=false]){
     dynamic data;
-    if (isParsed) data = json;
+    if (parsed) data = json;
     else data = parse(json);
     this.raw = getValueFor(data,"raw");
     this.seq = getValueFor(data,"seq");
@@ -108,7 +108,7 @@ class Note extends Results{
   Note();
   Note.fromJson(dynamic json,[bool parsed=false]){
     dynamic data;
-    if (isParsed) data = json;
+    if (parsed) data = json;
     else data = parse(json);
     this.noteType = getValueFor(data,"noteType");
     this.value = getValueFor(data,"value");
@@ -132,7 +132,7 @@ class Related extends Results{
   Related();
   Related.fromJson(dynamic json,[bool parsed=false]){
     dynamic data;
-    if (isParsed) data = json;
+    if (parsed) data = json;
     else data = parse(json);
     this.label1 = getValueFor(data,"label1");
     this.label2 = getValueFor(data,"label2");
@@ -153,7 +153,7 @@ class ExampleUsage extends Results{
   ExampleUsage();
   ExampleUsage.fromJson(dynamic json,[bool parsed=false]){
     dynamic data;
-    if (isParsed) data = json;
+    if (parsed) data = json;
     else data = parse(json);
     this.text = getValueFor(data,"text");
   }
@@ -170,7 +170,7 @@ class Label extends Results{
   Label();
   Label.fromJson(dynamic json,[bool parsed=false]){
     dynamic data;
-    if (isParsed) data = json;
+    if (parsed) data = json;
     else data = parse(json);
     this.label = getValueFor(data,"label");
     this.type = getValueFor(data,"type");
@@ -187,7 +187,7 @@ class Citation extends Results{
   Citation();
   Citation.fromJson(dynamic json,[bool parsed=false]){
     dynamic data;
-    if (isParsed) data = json;
+    if (parsed) data = json;
     else data = parse(json);
     this.cite = getValueFor(data,"cite");
     this.source = getValueFor(data,"source");

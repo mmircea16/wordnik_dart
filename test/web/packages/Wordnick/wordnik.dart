@@ -51,6 +51,18 @@ class WordnikAPI {
   }
   
   
+  Future<List<Related>> getRelatedWords(RelatedWordsRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/relatedWords${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       dynamic list = parse(data);
+       List<Related> rels = list.map((val)=>new Related.fromJson(val, true)).toList();
+       completer.complete(rels);
+    });
+    return completer.future;
+  }
   
   Future<List<Definition>> getDefinitions(DefinitionRequest req){
     var completer = new Completer();

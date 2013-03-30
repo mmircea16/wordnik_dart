@@ -9,6 +9,33 @@ void main(){
   
 }
 
+void testRelatedWordsRequest(){
+  group("test related words request",(){
+  test("== operator",(){
+    RelatedWordsRequest r1 = new RelatedWordsRequest("state");
+    RelatedWordsRequest r2 = new RelatedWordsRequest("different");
+    expect(r1,equals(r1));
+    expect(r1,isNot(equals(r2)));
+  });
+  
+  test("constructor",(){
+    RelatedWordsRequest r1 = new RelatedWordsRequest("test",false,"synonym",12);
+    RelatedWordsRequest r2 = new RelatedWordsRequest("");
+    r2.word = "test";
+    r2.useCanonical = false;
+    r2.limitPerRelationshipType = 12;
+    r2.relationshipType = "synonym";
+    expect(r1,equals(r2));
+  });
+  
+  test("http params",(){
+    RelatedWordsRequest r1 = new RelatedWordsRequest("test",false,"synonym",12);
+    String response = "useCanonical=false&relationshipTypes=synonym&limitPerRelationshipType=12";
+    expect(r1.toParams(),equals(response));
+  });
+  });
+}
+
 void testDefinitionRequest(){
   group("test definition request",(){
   test("== operator",(){
