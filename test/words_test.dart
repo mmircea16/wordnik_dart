@@ -17,11 +17,31 @@ void main(){
   testGetDefinitions(); 
   testGetTopExample();
   testGetRelatedWords();
+  testGetPronunciations();
 }
 
 void setup(){
   print("Hello Wordnik Test: Setup stage");
   api = new WordnikAPI("187b7605269b0c53bf65714c9a901203abe8587b53a397a0a");
+}
+
+void testGetPronunciations(){
+  group("Get pronunciations API call",(){
+    PronunciationRequest req = new PronunciationRequest("cautious",false,"","",2);
+    Future<List<TextPron>> response = api.getPronunciations(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check top example for 'cautious'",(){
+      
+      TextPron tp1 = new TextPron.fromJson("{\"seq\":0,\"raw\":\"(kôˈshəs)\",\"rawType\":\"ahd-legacy\"}");
+      TextPron tp2 = new TextPron.fromJson("{\"seq\":0,\"raw\":\"K AO1 SH AH0 S\",\"rawType\":\"arpabet\"}");
+      List<TextPron> list = new List<TextPron>();
+      list.add(tp1);
+      list.add(tp2);
+      expect(response,completion(equals(list)));
+    });
+  });  
 }
 
 void testGetRelatedWords(){

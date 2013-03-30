@@ -1,5 +1,6 @@
 library request;
 
+/** TODO : modify toParams method in order not to send empty get values **/
 class Request{
   Request();
   String toParams(){
@@ -62,6 +63,23 @@ class WordRequest extends Request{
   
   String toParams(){
     return "useCanonical=${this.useCanonical}&includeSuggestions=${this.includeSuggestions}";
+  }
+}
+
+class PronunciationRequest extends Request{
+  String word;
+  bool useCanonical;
+  String sourceDictionary;
+  String typeFormat;
+  int limit;
+  PronunciationRequest(this.word,[this.useCanonical=false, this.sourceDictionary="", this.typeFormat="", this.limit=50]);
+  
+  operator ==(PronunciationRequest req){
+    return this.word==req.word&&this.useCanonical==req.useCanonical&&this.sourceDictionary==req.sourceDictionary&&this.typeFormat==req.typeFormat&&this.limit==req.limit;
+  }
+  
+  String toParams(){
+    return "useCanonical=${useCanonical}&sourceDictionary=${sourceDictionary}&typeFormat=${typeFormat}&limit=${limit}"; 
   }
 }
 

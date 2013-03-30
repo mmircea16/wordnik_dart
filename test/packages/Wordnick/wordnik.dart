@@ -50,6 +50,18 @@ class WordnikAPI {
     apiUrl = "http://api.wordnik.com/v4";
   }
   
+  Future<List<TextPron>> getPronunciations(PronunciationRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/pronunciations${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       dynamic list = parse(data);
+       List<TextPron> rels = list.map((val)=>new TextPron.fromJson(val, true)).toList();
+       completer.complete(rels);
+    });
+    return completer.future;
+  }
   
   Future<List<Related>> getRelatedWords(RelatedWordsRequest req){
     var completer = new Completer();

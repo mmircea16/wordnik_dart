@@ -6,7 +6,35 @@ void main(){
   
   testDefinitionRequest();
   testWordRequest();
+  testPronunciationRequest();
+}
+
+void testPronunciationRequest(){
+  group("test pronunciation request",(){
+  test("== operator",(){
+    PronunciationRequest r1 = new PronunciationRequest("state");
+    PronunciationRequest r2 = new PronunciationRequest("different");
+    expect(r1,equals(r1));
+    expect(r1,isNot(equals(r2)));
+  });
   
+  test("constructor",(){
+    PronunciationRequest r1 = new PronunciationRequest("test",false,"abc","def",30);
+    PronunciationRequest r2 = new PronunciationRequest("");
+    r2.word = "test";
+    r2.useCanonical = false;
+    r2.limit = 30;
+    r2.sourceDictionary = "abc";
+    r2.typeFormat = "def";
+    expect(r1,equals(r2));
+  });
+  
+  test("http params",(){
+    PronunciationRequest r1 = new PronunciationRequest("test",false,"abc","def",30);
+    String response = "useCanonical=false&sourceDictionary=abc&typeFormat=def&limit=30";
+    expect(r1.toParams(),equals(response));
+  });
+  });
 }
 
 void testRelatedWordsRequest(){
