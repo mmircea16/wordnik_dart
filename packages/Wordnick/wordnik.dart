@@ -3,29 +3,22 @@ library wordnik;
 import 'dart:async';
 import 'dart:json';
 import 'src/word_object.dart';
-import 'src/word_request.dart';
-//import 'package:http/http.dart' as http;
 import 'dart:html';
 import "package:intl/intl.dart";
-import 'src/example_search_results.dart';
-import 'src/example_request.dart';
 import 'src/definition.dart';
-import 'src/definition_request.dart';
+import 'src/request.dart';
+import 'src/example_search_results.dart';
 
-export 'src/definition_request.dart';
+export 'src/request.dart';
 export 'src/definition.dart';
-export 'src/example_request.dart';
 export 'src/example_search_results.dart';
-export 'src/word_request.dart';
 export 'src/word_object.dart';
 
 
 class CustomHttpRequest {
  
   
-  CustomHttpRequest(){
-    
-  }
+  CustomHttpRequest();
   Future<String> read(String url,{Map headers}){
     HttpRequest http = new HttpRequest();
     http.open("GET",url);
