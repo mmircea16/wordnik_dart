@@ -7,6 +7,7 @@ void main(){
   testDefinitionRequest();
   testWordRequest();
   testPronunciationRequest();
+  /** TODO : add test hyphenation request **/
 }
 
 void testPronunciationRequest(){

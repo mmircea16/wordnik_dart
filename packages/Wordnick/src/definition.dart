@@ -197,3 +197,22 @@ class Citation extends Results{
     return [cite,source];
   }
 }
+
+class Syllabe extends Results{
+  String text;
+  int seq;
+  String type;
+  Syllabe();
+  Syllabe.fromJson(dynamic json,[bool parsed=false]){
+    dynamic data;
+    if (parsed) data = json;
+    else data = parse(json);
+    this.seq = getValueFor(data,"seq");
+    this.text = getValueFor(data,"text");
+    this.type = getValueFor(data,"type");
+  }
+  List<dynamic> toValueList(){
+    return [seq,text,type];
+  }
+  
+}

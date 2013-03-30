@@ -83,6 +83,22 @@ class PronunciationRequest extends Request{
   }
 }
 
+class HyphenationRequest extends Request{
+  String word;
+  bool useCanonical;
+  String sourceDictionary;
+  int limit;
+  HyphenationRequest(this.word,[this.useCanonical=false, this.sourceDictionary="",this.limit=50]);
+  
+  operator ==(HyphenationRequest req){
+    return this.word==req.word&&this.useCanonical==req.useCanonical&&this.sourceDictionary==req.sourceDictionary&&this.limit==req.limit;
+  }
+  
+  String toParams(){
+    return "useCanonical=${useCanonical}&sourceDictionary=${sourceDictionary}&limit=${limit}"; 
+  }
+}
+
 class ExampleRequest extends Request{
   String word;
   bool includeDuplicates=false;

@@ -50,6 +50,19 @@ class WordnikAPI {
     apiUrl = "http://api.wordnik.com/v4";
   }
   
+  Future<List<Syllabe>> getHyphenation(HyphenationRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/hyphenation${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       dynamic list = parse(data);
+       List<Syllabe> sylls = list.map((val)=>new Syllabe.fromJson(val, true)).toList();
+       completer.complete(sylls);
+    });
+    return completer.future;
+  }
+  
   Future<List<TextPron>> getPronunciations(PronunciationRequest req){
     var completer = new Completer();
     String params = "?${req.toParams()}";

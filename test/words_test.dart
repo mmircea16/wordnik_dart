@@ -1,4 +1,3 @@
-
 import "dart:async";
 import "package:Wordnick/wordnik.dart";
 import "package:unittest/unittest.dart";
@@ -18,11 +17,30 @@ void main(){
   testGetTopExample();
   testGetRelatedWords();
   testGetPronunciations();
+  testGetHyphenation();
 }
 
 void setup(){
   print("Hello Wordnik Test: Setup stage");
   api = new WordnikAPI("187b7605269b0c53bf65714c9a901203abe8587b53a397a0a");
+}
+
+void testGetHyphenation(){
+  group("Get hyphenation API call",(){
+    HyphenationRequest req = new HyphenationRequest("cautious",false,"",10);
+    Future<List<Syllabe>> response = api.getHyphenation(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check top example for 'cautious'",(){
+      Syllabe s1 = new Syllabe.fromJson("{\"type\":\"stress\",\"seq\":0,\"text\":\"cau\"}");
+      Syllabe s2 = new Syllabe.fromJson("{\"seq\":1,\"text\":\"tious\"}");
+      List<Syllabe> list = new List<Syllabe>();
+      list.add(s1);
+      list.add(s2);
+      expect(response,completion(equals(list)));
+    });
+  });  
 }
 
 void testGetPronunciations(){
