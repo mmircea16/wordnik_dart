@@ -99,6 +99,34 @@ class HyphenationRequest extends Request{
   }
 }
 
+class FrequencyRequest extends Request{
+  String word;
+  bool useCanonical;
+  int startYear;
+  int endYear;
+  FrequencyRequest(this.word,[this.useCanonical=false,this.startYear=1800, this.endYear=2012]);
+  operator ==(FrequencyRequest req){
+    return this.word==req.word&&this.useCanonical==req.useCanonical&&this.startYear==req.startYear&&this.endYear==req.endYear;
+  }
+  String toParams(){
+    return "useCanonical=${useCanonical}&startYear=${startYear}&endYear=${endYear}";
+  }
+}
+
+class PhrasesRequest extends Request{
+  String word;
+  bool useCanonical;
+  int limit;
+  int wlmi;
+  PhrasesRequest(this.word,[this.useCanonical=false,this.limit=5,this.wlmi=0]);
+  operator ==(PhrasesRequest req){
+    return this.word==req.word&&this.limit==req.limit&&this.useCanonical==req.useCanonical&&this.wlmi==req.wlmi;
+  }
+  String toParams(){
+    return "useCanonical=${useCanonical}&limit=${limit}&wlmi=${wlmi}";
+  }
+}
+
 class ExampleRequest extends Request{
   String word;
   bool includeDuplicates=false;
@@ -116,3 +144,27 @@ class ExampleRequest extends Request{
   }
 }
 
+class WordSearchRequest extends Request{
+  String query;
+  bool caseSensitive=true;
+  String includePartOfSpeech="";
+  String excludePartOfSpeech="";
+  int minCorpusCount=5;
+  int maxCorpusCount=-1;
+  int minDictionaryCount=1;
+  int maxDictionaryCount=-1;
+  int minLength=1;
+  int maxLength=-1;
+  int skip=0;
+  int limit=10;
+  
+  WordSearchRequest(this.query);
+  
+  String toParams(){
+    String a = "caseSensitive=${caseSensitive}&includePartOfSpeech=${includePartOfSpeech}&excludePartOfSpeech=${excludePartOfSpeech}";
+    String b = "minCorpusCount=${minCorpusCount}&maxCorpusCount=${maxCorpusCount}";
+    String c = "minDictionaryCount=${minDictionaryCount}&maxDictionaryCount=${maxDictionaryCount}";
+    String d = "minLength=${minLength}&maxLength=${maxLength}";
+    return "${a}&${b}&${c}&${d}&skip=${skip}&limit=${limit}";
+  }
+}

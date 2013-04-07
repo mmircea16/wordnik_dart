@@ -18,11 +18,63 @@ void main(){
   testGetRelatedWords();
   testGetPronunciations();
   testGetHyphenation();
+  testGetFrequency();
+  testGetPhrases();
+  testSearch();
 }
 
 void setup(){
   print("Hello Wordnik Test: Setup stage");
   api = new WordnikAPI("187b7605269b0c53bf65714c9a901203abe8587b53a397a0a");
+}
+
+void testSearch(){
+  group("Search API call",(){
+    WordSearchRequest req = new WordSearchRequest("cas");
+    Future<WordSearchResults> response = api.search(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("search for 'cas'",(){
+      WordSearchResults wsr = new WordSearchResults.fromJson("{\"totalResults\":262,\"searchResults\":[{\"lexicality\":0.0,\"count\":2773,\"word\":\"cas\"},{\"lexicality\":0.0,\"count\":3355426,\"word\":\"case\"},{\"lexicality\":0.0,\"count\":1071847,\"word\":\"cases\"},{\"lexicality\":0.0,\"count\":1004816,\"word\":\"cash\"},{\"lexicality\":0.0,\"count\":615377,\"word\":\"cast\"},{\"lexicality\":0.0,\"count\":159363,\"word\":\"casino\"},{\"lexicality\":0.0,\"count\":124420,\"word\":\"casual\"},{\"lexicality\":0.0,\"count\":124143,\"word\":\"casting\"},{\"lexicality\":0.0,\"count\":117036,\"word\":\"castle\"},{\"lexicality\":0.0,\"count\":106348,\"word\":\"casualties\"},{\"lexicality\":0.0,\"count\":62052,\"word\":\"casinos\"}]}");
+      expect(response,completion(equals(wsr)));
+    }); 
+  });
+}
+
+void testGetFrequency(){
+  group("Get frequency API call",(){
+    FrequencyRequest req = new FrequencyRequest("cat",false,1990,2013);
+    Future<FrequencySummary> response = api.getFrequency(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check frequency for 'cat'",(){
+      FrequencySummary fs = new FrequencySummary.fromJson("{\"word\":\"cat\",\"frequency\":[{\"year\":1990,\"count\":28},{\"year\":1991,\"count\":18},{\"year\":1992,\"count\":24},{\"year\":1993,\"count\":20},{\"year\":1994,\"count\":20},{\"year\":1995,\"count\":18},{\"year\":1996,\"count\":20},{\"year\":1997,\"count\":19},{\"year\":1998,\"count\":32},{\"year\":1999,\"count\":26},{\"year\":2000,\"count\":17},{\"year\":2001,\"count\":21},{\"year\":2002,\"count\":25},{\"year\":2003,\"count\":33},{\"year\":2004,\"count\":27},{\"year\":2005,\"count\":27},{\"year\":2006,\"count\":27},{\"year\":2007,\"count\":40},{\"year\":2008,\"count\":35},{\"year\":2009,\"count\":24},{\"year\":2010,\"count\":17},{\"year\":2011,\"count\":9},{\"year\":2012,\"count\":8}],\"unknownYearCount\":0,\"totalCount\":535}");
+      expect(response,completion(equals(fs)));
+    }); 
+  });
+}
+
+void testGetPhrases(){
+  group("Get phrases API call",(){
+    PhrasesRequest req = new PhrasesRequest("cautious",false);
+    req.limit = 3;
+    Future<List<Bigram>> response = api.getPhrases(req);
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check phrases for 'cautious'",(){
+      Bigram b1 = new Bigram.fromJson("{\"mi\":11.746829478952076,\"gram1\":\"cautious\",\"gram2\":\"optimism\",\"wlmi\":16.91675448039439}");
+      Bigram b2 = new Bigram.fromJson("{\"mi\":6.5066837159079505,\"gram1\":\"very\",\"gram2\":\"cautious\",\"wlmi\":14.529051528936405}");
+      Bigram b3 = new Bigram.fromJson("{\"mi\":12.628566597332256,\"gram1\":\"cautious\",\"gram2\":\"risk-averse\",\"wlmi\":12.628566597332256}");
+      List<Bigram> list = new List<Bigram>();
+      list.add(b1);
+      list.add(b2);
+      list.add(b3);
+      expect(response,completion(equals(list)));
+    });
+  });  
 }
 
 void testGetHyphenation(){

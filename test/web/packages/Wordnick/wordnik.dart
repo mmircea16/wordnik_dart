@@ -8,7 +8,13 @@ import "package:intl/intl.dart";
 import 'src/definition.dart';
 import 'src/request.dart';
 import 'src/example_search_results.dart';
+import 'src/word_search_results.dart';
+import 'src/frequency.dart';
+import 'src/bigram.dart';
 
+export 'src/word_search_results.dart';
+export 'src/bigram.dart';
+export 'src/frequency.dart';
 export 'src/request.dart';
 export 'src/definition.dart';
 export 'src/example_search_results.dart';
@@ -49,6 +55,32 @@ class WordnikAPI {
     headers["api_key"] = this.apiKey;
     apiUrl = "http://api.wordnik.com/v4";
   }
+  
+  Future<FrequencySummary> getFrequency(FrequencyRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/frequency${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       FrequencySummary fs = new FrequencySummary.fromJson(data);
+       completer.complete(fs);
+    });
+    return completer.future;
+  }  
+  
+  Future<List<Bigram>> getPhrases(PhrasesRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/word.json/${req.word}/phrases${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       dynamic list = parse(data);
+       List<Bigram> bigrams = list.map((val)=>new Bigram.fromJson(val, true)).toList();
+       completer.complete(bigrams);
+    });
+    return completer.future;
+  }
+  
   
   Future<List<Syllabe>> getHyphenation(HyphenationRequest req){
     var completer = new Completer();
@@ -184,6 +216,18 @@ class WordnikAPI {
        completer.complete(q);
     }
     );
+    return completer.future;
+  }
+  
+  Future<WordSearchResults> search(WordSearchRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/words.json/search/${req.query}?${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+       WordSearchResults w = new WordSearchResults.fromJson(data);
+       completer.complete(w);
+    });
     return completer.future;
   }
 }
