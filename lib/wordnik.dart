@@ -176,7 +176,7 @@ class WordnikAPI {
     
     Future<String> resp = client.read("http://api.wordnik.com/v4/words.json/randomWord?hasDictionaryDef=true&minDictionaryCount=100",headers: headers);
     int rez;
-    resp.then(( r){
+    resp.then((r){
        String q= parse(r)["word"];
        completer.complete(q);
     }
@@ -222,13 +222,27 @@ class WordnikAPI {
   Future<WordSearchResults> search(WordSearchRequest req){
     var completer = new Completer();
     String params = "?${req.toParams()}";
-    String path = "${apiUrl}/words.json/search/${req.query}?${params}";
+    String path = "${apiUrl}/words.json/search/${req.query}${params}";
     Future<String> resp = client.read(path, headers:headers);
     resp.then((data){
        WordSearchResults w = new WordSearchResults.fromJson(data);
        completer.complete(w);
     });
     return completer.future;
+  }
+  
+  Future<DefinitionSearchResults> getReverseDictionaryFor(ReverseDictionaryRequest req){
+    var completer = new Completer();
+    String params = "?${req.toParams()}";
+    String path = "${apiUrl}/words.json/reverseDictionary${params}";
+    Future<String> resp = client.read(path, headers:headers);
+    resp.then((data){
+      print("====");
+      print(data);
+      DefinitionSearchResults w = new DefinitionSearchResults.fromJson(data);
+       completer.complete(w);
+    });
+    return completer.future; 
   }
 }
 

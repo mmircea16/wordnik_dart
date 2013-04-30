@@ -2,6 +2,25 @@ library definition;
 import "results.dart";
 import "dart:json";
 
+class DefinitionSearchResults extends Results{
+  List<Definition> results;
+  int totalResults;
+  DefinitionSearchResults();
+  DefinitionSearchResults.fromJson(dynamic json,[bool isParsed=false]){
+    dynamic data;
+    if (isParsed) data = json;
+    else data = parse(json);
+    this.totalResults = getValueFor(data,"totalResults");
+    List<dynamic> list = getValueFor(data,"results");
+    if (list!=null) this.results = list.map((val) => new Definition.fromJson(val, true)).toList();
+    else this.results = null;
+  }
+  List<dynamic> toValueList(){
+    List<dynamic> list = (this.results==null) ? null : this.results.map((val)=>val.toValueList()).toList();
+    return [totalResults,list];
+  }
+}
+
 class Definition extends Results{
   String extendedText;
   String text;

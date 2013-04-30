@@ -8,7 +8,7 @@ WordnikAPI api;
 void main(){
   setup();
 
-  testRandomWord();
+  /*testRandomWord();
   testWordOfTheDay();
   testRandomWords();
   testGetWordObject();
@@ -20,7 +20,8 @@ void main(){
   testGetHyphenation();
   testGetFrequency();
   testGetPhrases();
-  testSearch();
+  testSearch();*/
+  testReverseDictionary();
 }
 
 void setup(){
@@ -252,5 +253,22 @@ void testWordOfTheDay(){
       expect(random,completion(equals("manzai"),"1 jan"));
     });
   });
+}
+
+void testReverseDictionary(){
+  group("Reverse dictionary",(){
+    ReverseDictionaryRequest req = new ReverseDictionaryRequest("port",1);
+    Future<DefinitionSearchResults> response = api.getReverseDictionaryFor(req);
+   
+    test("check error",(){
+      throwsA(response);
+    });
+    test("check answer for 'port'",(){
+      DefinitionSearchResults expectedResponse = new DefinitionSearchResults.fromJson("{\"totalResults\":1286,\"results\":[{\"textProns\":[],\"sourceDictionary\":\"century\",\"exampleUses\":[],\"relatedWords\":[],\"labels\":[],\"citations\":[],\"word\":\"outport\",\"text\":\"A port at some distance from the seat of trade or from the chief customhouse: distinguished from close port. Simmonds.\",\"sequence\":\"0\",\"score\":3.9547794,\"partOfSpeech\":\"noun\",\"attributionText\":\"from The Century Dictionary and Cyclopedia\"}]}");
+      
+      expect(response,completion(equals(expectedResponse),"reverse dictionary"));
+    });
+  });
+ 
 }
 

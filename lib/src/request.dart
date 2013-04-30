@@ -168,3 +168,12 @@ class WordSearchRequest extends Request{
     return "${a}&${b}&${c}&${d}&skip=${skip}&limit=${limit}";
   }
 }
+
+class ReverseDictionaryRequest extends Request {
+  String query;
+  int limit = 10;
+  ReverseDictionaryRequest(this.query,[this.limit=10]);
+  String toParams(){
+    return "query=${query}&limit=${limit}";
+  }
+}
