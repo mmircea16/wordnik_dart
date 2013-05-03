@@ -1,14 +1,19 @@
 import "dart:async";
 import "package:Wordnick/wordnik.dart";
 import "package:unittest/unittest.dart";
+import "package:unittest/html_enhanced_config.dart";
+
+import "dart:html";
+
 
 
 WordnikAPI api;
 
 void main(){
+  useHtmlEnhancedConfiguration();
   setup();
 
-  /*testRandomWord();
+  testRandomWord();
   testWordOfTheDay();
   testRandomWords();
   testGetWordObject();
@@ -20,7 +25,7 @@ void main(){
   testGetHyphenation();
   testGetFrequency();
   testGetPhrases();
-  testSearch();*/
+  testSearch();
   testReverseDictionary();
 }
 
